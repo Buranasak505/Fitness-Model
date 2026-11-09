@@ -716,7 +716,7 @@ app.post(
   }),
 );
 async function report(from: string, to: string) {
-  const [attendance, revenue, categories, settings, payments] = await db.$transaction([
+  const [attendance, revenue, categories, settings, payments] = await Promise.all([
     db.attendance.findMany({ where: { date: { gte: from, lte: to }, cancelled: false } }),
     db.revenueRecord.findMany({ where: { date: { gte: from, lte: to }, voided: false } }),
     db.serviceCategory.findMany(),
